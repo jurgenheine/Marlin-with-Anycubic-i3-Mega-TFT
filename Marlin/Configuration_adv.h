@@ -66,6 +66,14 @@
 #if ENABLED(THERMAL_PROTECTION_HOTENDS)
   #define THERMAL_PROTECTION_PERIOD 40        // Seconds
   #define THERMAL_PROTECTION_HYSTERESIS 4     // Degrees Celsius
+  
+// I3 Mega Protection settings :
+
+//#if ENABLED(THERMAL_PROTECTION_HOTENDS)
+//  #define THERMAL_PROTECTION_PERIOD 250        // Seconds-
+//  #define THERMAL_PROTECTION_HYSTERESIS 45     // Degrees Celsius
+
+// I3 MEGA END
 
   /**
    * Whenever an M104, M109, or M303 increases the target temperature, the
@@ -83,12 +91,22 @@
   #define WATCH_TEMP_INCREASE 2               // Degrees Celsius
 #endif
 
+// I3 Mega Protection settings :
+  
+//  #define WATCH_TEMP_PERIOD 35                // Seconds
+//  #define WATCH_TEMP_INCREASE 10               // Degrees Celsius
+//#endif
+
+// I3 MEGA END
+
+
 /**
  * Thermal Protection parameters for the bed are just as above for hotends.
  */
 #if ENABLED(THERMAL_PROTECTION_BED)
   #define THERMAL_PROTECTION_BED_PERIOD 20    // Seconds
   #define THERMAL_PROTECTION_BED_HYSTERESIS 2 // Degrees Celsius
+
 
   /**
    * As described above, except for the bed (M140/M190/M303).
@@ -127,7 +145,7 @@
 
 // Show Temperature ADC value
 // Enable for M105 to include ADC values read from temperature sensors.
-//#define SHOW_TEMP_ADC_VALUES
+#define SHOW_TEMP_ADC_VALUES
 
 /**
  * High Temperature Thermistor Support
@@ -506,7 +524,7 @@
   // as SD_DETECT_PIN in your board's pins definitions.
   // This setting should be disabled unless you are using a push button, pulling the pin to ground.
   // Note: This is always disabled for ULTIPANEL (except ELB_FULL_GRAPHIC_CONTROLLER).
-  #define SD_DETECT_INVERTED
+  // #define SD_DETECT_INVERTED
 
   #define SD_FINISHED_STEPPERRELEASE true          // Disable steppers when SD Print is finished
   #define SD_FINISHED_RELEASECOMMAND "M84 X Y Z E" // You might want to keep the z enabled so your bed stays in place.
@@ -676,7 +694,7 @@
  * K=0 means advance disabled.
  * See Marlin documentation for calibration instructions.
  */
-//#define LIN_ADVANCE
+#define LIN_ADVANCE
 
 #if ENABLED(LIN_ADVANCE)
   #define LIN_ADVANCE_K 75
