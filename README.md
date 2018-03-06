@@ -4,6 +4,95 @@
 # Based on work form Murdock (lesimprimantes3d.fr)
 # Based on work from derhopp (https://github.com/derhopp) and Bartolomeus (Thingiverse)
 
+MARLIN 1.1.8 Anycubic I3 Mega V2 with original screen.
+
+Firmware for the mega v2 (no ABL, dual Z and 8bits trigorilla card) which is a mix of the work of Murdock (lesimprimates3d.fr) for TFT32 MKS screen and the work of Derhopp from thingiverse.
+
+This version allows you to switch to 1.1.8 by keeping the original screen of the printer.
+
+To install it, it's as usual, with arduino for compilation and then push everything on the printer. E.g. do the .hex file and send it with Octoprint (via the firmware plugin).
+
+The values in the conf file for tuning or the extruder steps are normally good to start with. If needed, a small M502 and M500 to update the EEPROM can be required.
+
+To go back to stock, just put the original Anycubic file (from their website).
+
+Difference compared to anycubic official firmware:
+• No start music
+• No recovery after power failure
+• No auto bed leveling for now
+• More tests to do to see if everything is ok
+
+************
+New things on top of regular  marlin:
+
+DerHopp made a special menu in the SD part. If you go to the print menu, you can select "Special Menu" at the top and press the round / arrow button to enter the menu.
+
+The “genius” idea of the developer is to use the file selection screen on the SD to generate an additional menu.
+
+It adds to the top of the list of files an entry that looks like a directory and is called "special menu". When we go in there there is a list of possible action. You already have some configured entries (read eeprom, save eeprom, auto tune ...). It compensates for the lack of customization of the lcd. And it's easy to add new ones if necessary as for lighting LEDs for example.
+
+If you want to add / modify these entries, you have to edit the firmware and send it back to the trigorilla. Everything happens in the AnycubicTFT.cpp file:
+in the AnycubicTFTClass :: Ls () section we add the menu entries (4 per page) of the <Auto Tune Hotend PID> style and then in the AnycubicTFTClass :: HandleSpecialMenu () section we define which command (s) will be started : M303 C8 S200.
+************
+
+If necessary, here are the two operations to do:
+
+*** PID Tuning:
+We start cold and we do a: M303 E0 S200 C8
+We write down the values found at the end of the test:
+Recv: PID Autotune finished! Put the last Kp, Ki and Kd constant from below into Configuration.hRecv:
+#define DEFAULT_Kp 14.23Recv:
+#define DEFAULT_Ki 1.03Recv:
+#define DEFAULT_Kd 49.32
+
+and makes a: M301 P14.23 I1.03 D49.32
+and we save with an M500
+
+*** Extruder Steps:
+
+We write down the current value of the steps with the command M503 and we look at the value found for the M92 behind the parameter E (92.6 by default on the i3)
+To adjust the extruder, it makes a mark on the filament from the extruder at 15 cm for example.
+
+Reset to zero the extrusion counter with a G92 E0
+Then the hotend is heated and the following command is used to push the filament by 10 cm: G1 E10 F 92
+Then we measure how much centimeters it remains between the mark and the extruder and we calculate the new value of step: Ex: 9.1 cm are taken instead of 10 so the value will be 92.6 * 100/91 = 102 (old value * 100 / number of cm taken).
+
+We send the new value in the printer: M92 E102
+We save the values: M500
+
+************
+
+*** WARNING *** 
+
+As the fan is now capable to go to 100% when it start (generally after the first layer) then it is possible that the hotend temperature drops too much and beyond the thermal runaway configured in the firmware. Two options here : change slicer setting to move avoid 0->100% and have maybe second layer at 80 then third one to 90 and so on. Otherwise, you can as well change the firmware setting and compile it again.
+
+This is in the configuration_adv file :
+
+#if ENABLED(THERMAL_PROTECTION_HOTENDS)
+  #define THERMAL_PROTECTION_PERIOD 40        // Seconds
+  #define THERMAL_PROTECTION_HYSTERESIS 4     // Degrees Celsius
+
+Please note that the official firmware has this setting "disable" which is a huge risk.
+
+Documentation state : 
+
+ * Thermal Protection provides additional protection to your printer from damage
+ * and fire. Marlin always includes safe min and max temperature ranges which
+ * protect against a broken or disconnected thermistor wire.
+ *
+ * The issue: If a thermistor falls out, it will report the much lower
+ * temperature of the air in the room, and the the firmware will keep
+ * the heater on.
+ *
+ * The solution: Once the temperature reaches the target, start observing.
+ * If the temperature stays too far below the target (hysteresis) for too
+ * long (period), the firmware will halt the machine as a safety precaution.
+ *
+ * If you get false positives for "Thermal Runaway", increase
+ * THERMAL_PROTECTION_HYSTERESIS and/or THERMAL_PROTECTION_PERIOD
+
+
+
 # Marlin 3D Printer Firmware
 <img align="right" src="../../raw/1.1.x/buildroot/share/pixmaps/logo/marlin-250.png" />
 
