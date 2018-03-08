@@ -51,7 +51,7 @@
 
 #define X_MAX_PIN          43
 #define Y_MAX_PIN          -1 
-#define Z_MAX_PIN          -1
+#define Z_MAX_PIN          11 // Set to 11 to use ABL Sensor
 
 // Fans
 #define FAN_PIN             9
@@ -71,7 +71,7 @@
 
 // Servos
 #ifdef NUM_SERVOS
-	#define SERVO0_PIN      11
+	//#define SERVO0_PIN      11 // Removed to use pin 11 as probe sensor for ABL
 	
 	#if NUM_SERVOS > 1
 		#define SERVO1_PIN    6
