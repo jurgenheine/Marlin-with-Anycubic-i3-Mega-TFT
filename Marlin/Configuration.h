@@ -517,7 +517,7 @@
 #define X_MAX_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
-#define Z_MIN_PROBE_ENDSTOP_INVERTING true // set to true to invert the logic of the probe.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
 // One line above differs from anycubic ones. They have been copied from murdock firmware config.
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
@@ -627,7 +627,7 @@
  *
  */
 #define Z_MIN_PROBE_ENDSTOP
-#define Z_MIN_PROBE_PIN Z_MAX_PIN // Use ABL
+//#define Z_MIN_PROBE_PIN Z_MAX_PIN // Use ABL
 
 /**
  * Probe Type
@@ -704,8 +704,8 @@
  *      O-- FRONT --+
  *    (0,0)
  */
-#define X_PROBE_OFFSET_FROM_EXTRUDER -20  // X offset: -left  +right  [of the nozzle]
-#define Y_PROBE_OFFSET_FROM_EXTRUDER -14  // Y offset: -front +behind [the nozzle]
+#define X_PROBE_OFFSET_FROM_EXTRUDER 40  // X offset: -left  +right  [of the nozzle]
+#define Y_PROBE_OFFSET_FROM_EXTRUDER -20  // Y offset: -front +behind [the nozzle]
 #define Z_PROBE_OFFSET_FROM_EXTRUDER 0.1   // Z offset: -below +above  [the nozzle]
 // Three lines above differs from Murdock ones. They have been copied from anycubic firmware config.
 
@@ -940,10 +940,10 @@
   //#define RIGHT_PROBE_BED_POSITION 170
   //#define FRONT_PROBE_BED_POSITION 20
   //#define BACK_PROBE_BED_POSITION 170
-  #define LEFT_PROBE_BED_POSITION 25
-  #define RIGHT_PROBE_BED_POSITION 185
-  #define FRONT_PROBE_BED_POSITION 25
-  #define BACK_PROBE_BED_POSITION 185
+  #define LEFT_PROBE_BED_POSITION 50
+  #define RIGHT_PROBE_BED_POSITION 160
+  #define FRONT_PROBE_BED_POSITION 50
+  #define BACK_PROBE_BED_POSITION 160
 
   // The Z probe minimum outer margin (to validate G29 parameters).
   #define MIN_PROBE_EDGE 10
