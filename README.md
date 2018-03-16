@@ -41,9 +41,9 @@ If necessary, here are the two operations to do:
 We start cold and we do a: M303 E0 S200 C8
 We write down the values found at the end of the test:
 Recv: PID Autotune finished! Put the last Kp, Ki and Kd constant from below into Configuration.hRecv:
-#define DEFAULT_Kp 14.23Recv:
-#define DEFAULT_Ki 1.03Recv:
-#define DEFAULT_Kd 49.32
+• #define DEFAULT_Kp 14.23Recv:
+• #define DEFAULT_Ki 1.03Recv:
+• #define DEFAULT_Kd 49.32
 
 and makes a: M301 P14.23 I1.03 D49.32
 and we save with an M500
@@ -68,9 +68,9 @@ As the fan is now capable to go to 100% when it start (generally after the first
 
 This is in the configuration_adv file :
 
-if ENABLED(THERMAL_PROTECTION_HOTENDS)
-define THERMAL_PROTECTION_PERIOD 40        // Seconds
-define THERMAL_PROTECTION_HYSTERESIS 4     // Degrees Celsius
+• if ENABLED(THERMAL_PROTECTION_HOTENDS)
+• define THERMAL_PROTECTION_PERIOD 40        // Seconds
+• define THERMAL_PROTECTION_HYSTERESIS 4     // Degrees Celsius
 
 Please note that the official firmware has this setting "disable" which is a huge risk.
 
