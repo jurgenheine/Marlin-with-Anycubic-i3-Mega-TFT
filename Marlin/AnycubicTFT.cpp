@@ -193,7 +193,7 @@ void AnycubicTFTClass::HandleSpecialMenu()
     SpecialMenu=true;
   } else if (strcmp(SelectedDirectory, "<auto tune hotend pid>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: Auto Tune PID");
-    enqueue_and_echo_commands_P(PSTR("M303 C8 S200"));
+    enqueue_and_echo_commands_P(PSTR("M303 C8 S200 U1"));
   } else if (strcmp(SelectedDirectory, "<auto bed leveling>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: Auto Bed Leveling");
     enqueue_and_echo_commands_P(PSTR("G28\nG29"));
