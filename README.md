@@ -40,6 +40,18 @@ If you want to add / modify these entries, you have to edit the firmware and sen
 in the AnycubicTFTClass :: Ls () section we add the menu entries (4 per page) of the <Auto Tune Hotend PID> style and then in the AnycubicTFTClass :: HandleSpecialMenu () section we define which command (s) will be started : M303 C8 S200.
 ************
 
+After new firmware installation, best is to flush eeprom and save it. This will avoid to have older values used by the printer.
+
+Just do a M502 and a M500 :
+
+Send: M502
+Recv: echo:Hardcoded Default Settings Loaded
+
+Send: M500
+Recv: echo:Settings Stored (614 bytes; crc 3761)
+
+
+************
 If necessary, here are the two operations to do:
 
 *** PID Tuning:
