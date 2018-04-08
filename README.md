@@ -19,7 +19,12 @@ To go back to stock, just put the original Anycubic file (from their website).
 Difference compared to anycubic official firmware:
 • No start music
 • No recovery after power failure
-• No auto bed leveling for now
+• Thermal runaway active
+• Linear advice active (K 150)
+• ABL linear active (Touch mi setup)
+• Hotend limitation at 250°. (can be too small for petg and ABS but good limit for V5 hotend)
+• Hotend fan can run at 12V (maybe put 85-90% instead of 100% for the fan otherwise it cool to much)
+• Special menu from Derhopp active. New entry in the menu to put hotend in maintenance position
 • More tests to do to see if everything is ok
 
 ************
