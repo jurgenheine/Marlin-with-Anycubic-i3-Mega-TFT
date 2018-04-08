@@ -222,7 +222,7 @@ void AnycubicTFTClass::Ls()
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune Hotend PID>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Bed Leveling>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Bed Leveling>");
-		ANYCUBIC_SERIAL_PROTOCOLLNPGM("<HotEnd Maintenance>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<HotEnd Maintenance>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<HotEnd Maintenance>");
         break;
 
