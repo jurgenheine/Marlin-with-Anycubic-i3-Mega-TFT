@@ -55,15 +55,17 @@ Recv: echo:Settings Stored (614 bytes; crc 3761)
 If necessary, here are the two operations to do:
 
 *** PID Tuning:
-We start cold and we do a: M303 E0 S200 C8
-We write down the values found at the end of the test:
-Recv: PID Autotune finished! Put the last Kp, Ki and Kd constant from below into Configuration.hRecv:
-• #define DEFAULT_Kp 14.23Recv:
-• #define DEFAULT_Ki 1.03Recv:
+We start cold and we do a: M303 E0 S200 C8 U1
+
+We see the values found at the end of the test:
+Recv: PID Autotune finished! Put the last Kp, Ki and Kd constant from below into Configuration.h
+• #define DEFAULT_Kp 14.23
+• #define DEFAULT_Ki 1.03
 • #define DEFAULT_Kd 49.32
 
-and makes a: M301 P14.23 I1.03 D49.32
 and we save with an M500
+
+(U1 directive allow to remove the need of manual update via a: M301 P14.23 I1.03 D49.32)
 
 *** Extruder Steps:
 
