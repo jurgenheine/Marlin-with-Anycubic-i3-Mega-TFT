@@ -205,7 +205,7 @@ void AnycubicTFTClass::HandleSpecialMenu()
     enqueue_and_echo_commands_P(PSTR("M501"));
   } else if (strcmp(SelectedDirectory, "<hotend maintenance>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: HotEnd Maintenance");
-    enqueue_and_echo_commands_P(PSTR("G28\G0 X100 Y100 Z125 F5000"));
+    enqueue_and_echo_commands_P(PSTR("G28\nG0 X100 Y100 Z125 F5000"));
   } else if (strcmp(SelectedDirectory, "<exit>")==0) {
     SpecialMenu=false;
   }
