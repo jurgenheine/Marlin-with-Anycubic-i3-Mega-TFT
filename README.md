@@ -1,8 +1,8 @@
 
 # Marlin 3D Printer Firmware for Anycubic I3 Mega
-# with Original TFT display
-# Based on work form Murdock (lesimprimantes3d.fr)
-# Based on work from derhopp (https://github.com/derhopp) and Bartolomeus (Thingiverse)
+## with Original TFT display
+### Based on work form Murdock (lesimprimantes3d.fr)
+### Based on work from derhopp (https://github.com/derhopp) and Bartolomeus (Thingiverse)
 
 MARLIN 1.1.8 Anycubic I3 Mega V2 with original screen.
 
@@ -17,15 +17,15 @@ The values in the conf file for tuning or the extruder steps are normally good t
 To go back to stock, just put the original Anycubic file (from their website).
 
 Difference compared to anycubic official firmware:
-• No start music
-• No recovery after power failure
-• Thermal runaway active
-• Linear advice active (K 150)
-• ABL linear active (Touch mi setup)
-• Hotend limitation at 250°. (can be too small for petg and ABS but good limit for V5 hotend)
-• Hotend fan can run at 12V (maybe put 85-90% instead of 100% for the fan otherwise it cool to much)
-• Special menu from Derhopp active. New entry in the menu to put hotend in maintenance position
-• More tests to do to see if everything is ok
+* No start music
+* No recovery after power failure
+* Thermal runaway active
+* Linear advice active (K 150)
+* ABL linear active (Touch mi setup)
+* Hotend limitation at 250°. (can be too small for petg and ABS but good limit for V5 hotend)
+* Hotend fan can run at 12V (maybe put 85-90% instead of 100% for the fan otherwise it cool to much)
+* Special menu from Derhopp active. New entry in the menu to put hotend in maintenance position
+* More tests to do to see if everything is ok
 
 ************
 New things on top of regular  marlin:
@@ -38,79 +38,108 @@ It adds to the top of the list of files an entry that looks like a directory and
 
 If you want to add / modify these entries, you have to edit the firmware and send it back to the trigorilla. Everything happens in the AnycubicTFT.cpp file:
 in the AnycubicTFTClass :: Ls () section we add the menu entries (4 per page) of the <Auto Tune Hotend PID> style and then in the AnycubicTFTClass :: HandleSpecialMenu () section we define which command (s) will be started : M303 C8 S200.
-************
-
-After new firmware installation, best is to flush eeprom and save it. This will avoid to have older values used by the printer.
-
-Just do a M502 and a M500 :
-
-Send: M502
-Recv: echo:Hardcoded Default Settings Loaded
-
-Send: M500
-Recv: echo:Settings Stored (614 bytes; crc 3761)
-
-
-************
-If necessary, here are the two operations to do:
-
-*** PID Tuning:
-We start cold and we do a: M303 E0 S200 C8 U1
-
-We see the values found at the end of the test:
-Recv: PID Autotune finished! Put the last Kp, Ki and Kd constant from below into Configuration.h
-• #define DEFAULT_Kp 14.23
-• #define DEFAULT_Ki 1.03
-• #define DEFAULT_Kd 49.32
-
-and we save with an M500
-
-(U1 directive allow to remove the need of manual update via a: M301 P14.23 I1.03 D49.32)
-
-*** Extruder Steps:
-
-We write down the current value of the steps with the command M503 and we look at the value found for the M92 behind the parameter E (92.6 by default on the i3)
-To adjust the extruder, it makes a mark on the filament from the extruder at 15 cm for example.
-
-Reset to zero the extrusion counter with a G92 E0
-Then the hotend is heated and the following command is used to push the filament by 10 cm: G1 E10 F 92
-Then we measure how much centimeters it remains between the mark and the extruder and we calculate the new value of step: Ex: 9.1 cm are taken instead of 10 so the value will be 92.6 * 100/91 = 102 (old value * 100 / number of cm taken).
-
-We send the new value in the printer: M92 E102
-We save the values: M500
 
 ************
 
-*** WARNING *** 
+# FAQ
+
+###### My special menu does not work :
+
+In order to use the menu, a SD card must be in the printer. When choosing entry, when it turns red, you should validate your choice with the "rounded arrow" button
+
+###### My special menu hang :
+
+Please remove the Chinese folders/files from the SD card
+
+###### My printer stop just after first layer :
 
 As the fan is now capable to go to 100% when it start (generally after the first layer) then it is possible that the hotend temperature drops too much and beyond the thermal runaway configured in the firmware. Two options here : change slicer setting to move avoid 0->100% and have maybe second layer at 80 then third one to 90 and so on. Otherwise, you can as well change the firmware setting and compile it again.
 
-This is in the configuration_adv file :
+###### My print quality does not look good :
 
-• if ENABLED(THERMAL_PROTECTION_HOTENDS)
-• define THERMAL_PROTECTION_PERIOD 40        // Seconds
-• define THERMAL_PROTECTION_HYSTERESIS 4     // Degrees Celsius
+You need to perform few optional operations to make sure the settings are accurate:
 
-Please note that the official firmware has this setting "disable" which is a huge risk.
+1. Reset the EEPROM settings (to start fresh with firmware values)
 
-Documentation state : 
+ Just do a M502 to restore factory firmware value and a M500 to save them.
 
- * Thermal Protection provides additional protection to your printer from damage
- * and fire. Marlin always includes safe min and max temperature ranges which
- * protect against a broken or disconnected thermistor wire.
- *
- * The issue: If a thermistor falls out, it will report the much lower
- * temperature of the air in the room, and the the firmware will keep
- * the heater on.
- *
- * The solution: Once the temperature reaches the target, start observing.
- * If the temperature stays too far below the target (hysteresis) for too
- * long (period), the firmware will halt the machine as a safety precaution.
- *
- * If you get false positives for "Thermal Runaway", increase
- * THERMAL_PROTECTION_HYSTERESIS and/or THERMAL_PROTECTION_PERIOD
+ Send: M502 Recv: echo:Hardcoded Default Settings Loaded
+
+ Send: M500 Recv: echo:Settings Stored (614 bytes; crc 3761)
+
+2. Auto Tune PID
+
+ PID Tuning: We start cold and we do a: M303 E0 S200 C8 U1
+
+ We see the values found at the end of the test:
+
+ Recv: PID Autotune finished!
+
+ #define DEFAULT_Kp 14.23
+
+ #define DEFAULT_Ki 1.03
+
+ #define DEFAULT_Kd 49.32
+
+ and we save with an M500
+
+ (U1 directive allow to remove the need of manual update via a: M301 P14.23 I1.03 D49.32)
+
+3. Change Step values for extruder if required
+
+ We write down the current value of the steps with the command M503 and we look at the value found for the M92 behind the parameter E (92.6 by default on the i3)
+ To adjust the extruder, it makes a mark on the filament from the extruder at 15 cm for example.
+
+ Reset to zero the extrusion counter with a G92 E0
+ Then the hotend is heated and the following command is used to push the filament by 10 cm: G1 E10 F 92
+
+ Then we measure how much centimeters it remains between the mark and the extruder and we calculate the new value of step: Ex: 9.1 cm are taken instead of 10 so the value will be 92.6 * 100/91 = 102 (old value * 100 / number of cm taken).
+
+ We send the new value in the printer: M92 E102
+
+ We save the values: M500
+
+4. Change the hotted fan speed.
+
+ As the fan is now capable to go to 100% when it start (generally after the first layer) then it is possible that the hotend temperature drops too much and beyond the thermal runaway configured in the firmware.
+
+ Two options here : change slicer setting to move avoid 0->100% and have maybe second layer at 80 then third one to 90 and so on. Otherwise, you can as well change the firmware setting and compile it again.
+
+ This is in the configuration_adv file :
+
+ * if ENABLED(THERMAL_PROTECTION_HOTENDS)
+ * define THERMAL_PROTECTION_PERIOD 40        // Seconds
+ * define THERMAL_PROTECTION_HYSTERESIS 4     // Degrees Celsius
+
+ Please note that the official firmware has this setting "disable" which is a huge risk.
+
+ Documentation state :
+
+  * Thermal Protection provides additional protection to your printer from damage
+  * and fire. Marlin always includes safe min and max temperature ranges which
+  * protect against a broken or disconnected thermistor wire.
+
+  * The issue: If a thermistor falls out, it will report the much lower
+  * temperature of the air in the room, and the the firmware will keep
+  * the heater on.
+
+  * The solution: Once the temperature reaches the target, start observing.
+  * If the temperature stays too far below the target (hysteresis) for too
+  * long (period), the firmware will halt the machine as a safety precaution.
+
+  * If you get false positives for "Thermal Runaway", increase
+  * THERMAL_PROTECTION_HYSTERESIS and/or THERMAL_PROTECTION_PERIOD
+
+5. Change the K value for linear advance.
+
+ Value for K is set at 150. This is generally a good value for PLA. You can use the gcode generator on marlin website if you want to adjust the value to your printer/filament. (http://marlinfw.org/docs/features/lin_advance.html)
+Command to change it is M900 Kxx (where xx is what you found with the test)
 
 
+***
+***
+***
+***
 
 # Marlin 3D Printer Firmware
 <img align="right" src="../../raw/1.1.x/buildroot/share/pixmaps/logo/marlin-250.png" />
