@@ -206,6 +206,9 @@ void AnycubicTFTClass::HandleSpecialMenu()
   } else if (strcmp(SelectedDirectory, "<hotend maintenance>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: HotEnd Maintenance");
     enqueue_and_echo_commands_P(PSTR("G28\nG0 X100 Y100 Z125 F5000"));
+  } else if (strcmp(SelectedDirectory, "<preHeat 200 60>")==0) {
+    SERIAL_PROTOCOLLNPGM("Special Menu: PreHeat 200 60");
+    enqueue_and_echo_commands_P(PSTR("M140 S60\nM104 S200 T0"));
   } else if (strcmp(SelectedDirectory, "<exit>")==0) {
     SpecialMenu=false;
   }
@@ -218,8 +221,8 @@ void AnycubicTFTClass::Ls()
       case 0: // First Page
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Exit>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Exit>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune Hotend PID>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune Hotend PID>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<PreHeat 200 60>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<PreHeat 200 60>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Bed Leveling>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Bed Leveling>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<HotEnd Maintenance>");
@@ -231,6 +234,8 @@ void AnycubicTFTClass::Ls()
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Read EEPROM>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Save EEPROM>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Save EEPROM>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune Hotend PID>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune Hotend PID>");
         break;
         
       default:
