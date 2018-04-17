@@ -143,19 +143,29 @@ Tutorial firmware update by Pierre Multi on Anycubic english forum:
 
 
 Flashing Mega i3 with Octoprint
+
 1. Add OctoPrint-FirmwareUpdater via plugin manager
 
 2. AVRDUDE Installation
+
  AVRDUDE needs to be installed on the server where OctoPrint is running.
+
  Raspberry Pi
+
  sudo apt-get update
+
  sudo apt-get install avrdude
  
 3. Setup FirmwareUpdater
+
  in Octoprint Settings / Firmware Updater / parameters
+
  Flash method : avrdude
+
  AVR MCU : ATmega2560
+
  Path to avrdude : /usr/bin/avrdude
+
  AVR Programmer Type : wiring
  
 4. Save : you are ready to flash
