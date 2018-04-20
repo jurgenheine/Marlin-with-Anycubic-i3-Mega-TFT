@@ -3445,6 +3445,8 @@ static void homeaxis(const AxisEnum axis) {
 
           card.openFile(job_recovery_info.sd_filename, true);
           card.setIndex(job_recovery_info.sdpos);
+          // need to check for start or for resume
+          print_job_timer.start();
         }
         else {
           if (job_recovery_info.valid_head != job_recovery_info.valid_foot)

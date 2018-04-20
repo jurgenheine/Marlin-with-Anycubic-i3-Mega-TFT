@@ -209,8 +209,8 @@ void AnycubicTFTClass::HandleSpecialMenu()
   } else if (strcmp(SelectedDirectory, "<preheat 200 60>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: PreHeat 200 60");
     enqueue_and_echo_commands_P(PSTR("M140 S60\nM104 S200 T0"));
-  } else if (strcmp(SelectedDirectory, "<power outage recovery>")==0) {
-    SERIAL_PROTOCOLLNPGM("Special Menu: Power Outage Recovery");
+  } else if (strcmp(SelectedDirectory, "<power outage recover>")==0) {
+    SERIAL_PROTOCOLLNPGM("Special Menu: Power Outage Recover");
     enqueue_and_echo_commands_P(PSTR("G8"));
   } else if (strcmp(SelectedDirectory, "<exit>")==0) {
     SpecialMenu=false;
@@ -239,8 +239,8 @@ void AnycubicTFTClass::Ls()
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Save EEPROM>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune Hotend PID>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune Hotend PID>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Power Outage Recovery>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Power Outage Recovery>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Power Outage Recover>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Power Outage Recover>");
        break;
         
       default:
