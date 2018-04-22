@@ -817,45 +817,6 @@ void kill_screen(const char* lcd_msg) {
 
   #endif // SDSUPPORT
 
- /* #if ENABLED(POWER_LOSS_RECOVERY)
-
-    static void lcd_sdcard_recover_job() {
-      char cmd[20];
-      enqueue_and_echo_commands_P_now(PSTR("M420 S0\nG28"
-        #if !IS_KINEMATIC
-          " X Y"
-        #endif
-      ));
-      // Restore the bed temperature
-      sprintf_P(cmd, PSTR("M190 S%i"), job_recovery_info.target_temperature_bed);
-      enqueue_and_echo_command(cmd);
-      // Restore all hotend temperatures
-      HOTEND_LOOP() {
-        sprintf_P(cmd, PSTR("M109 S%i"), job_recovery_info.target_temperature[e]);
-        enqueue_and_echo_command(cmd);
-      }
-      // Restore print cooling fan speeds
-      for (uint8_t i = 0; i < FAN_COUNT; i++) {
-        sprintf_P(cmd, PSTR("M106 P%i S%i"), i, job_recovery_info.fanSpeeds[i]);
-        enqueue_and_echo_command(cmd);
-      }
-      job_recovery_phase = JOB_RECOVERY_YES; // Start draining the job recovery command queue
-      print_job_timer.resume(job_recovery_info.print_job_elapsed);
-      card.startFileprint();
-      lcd_return_to_status();
-    }
-
-    static void lcd_job_recovery_menu() {
-      defer_return_to_status = true;
-      START_MENU();
-      MENU_ITEM(function, MSG_RESUME_PRINT, lcd_sdcard_recover_job);
-      MENU_ITEM(function, MSG_STOP_PRINT, lcd_sdcard_stop);
-      END_MENU();
-    }
-
-  #endif
-
-*/
 
   #if ENABLED(MENU_ITEM_CASE_LIGHT)
 
