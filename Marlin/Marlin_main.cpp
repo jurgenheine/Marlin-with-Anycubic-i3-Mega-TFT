@@ -3835,7 +3835,7 @@ inline void gcode_G4() {
 
      void PowerRecoveryInfo()
   {
-          #ifdef POWER_LOSS_RECOVERY
+          #ifdef DEBUG_POWER_LOSS_RECOVERY
             //debug_print_job_recovery(false);
             SERIAL_ECHOLNPGM("G7 POWER LOSS RECOVERY INFO");
             debug_print_job_recovery(true);
@@ -4384,9 +4384,16 @@ inline void gcode_G28(const bool always_home_all) {
 
     #endif
 
-    if (home_all || homeX || homeY) {
+    const float z_homing_height = (
+      #if ENABLED(UNKNOWN_Z_NO_RAISE)
+        !axis_known_position[Z_AXIS] ? 0 :
+      #endif
+          (parser.seenval('R') ? parser.value_linear_units() : Z_HOMING_HEIGHT)
+    );
+
+    if (z_homing_height && (home_all || homeX || homeY)) {
       // Raise Z before homing any other axes and z is not already high enough (never lower z)
-      destination[Z_AXIS] = Z_HOMING_HEIGHT;
+      destination[Z_AXIS] = z_homing_height;
       if (destination[Z_AXIS] > current_position[Z_AXIS]) {
 
         #if ENABLED(DEBUG_LEVELING_FEATURE)
