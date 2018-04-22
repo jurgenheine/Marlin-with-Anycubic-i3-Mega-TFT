@@ -3343,7 +3343,6 @@ static void homeaxis(const AxisEnum axis) {
    * If the file has a saved state, populate the job_recovery_commands queue
    */
   void do_print_job_recovery() {
-    //if (job_recovery_commands_count > 0) return;
     memset(&job_recovery_info, 0, sizeof(job_recovery_info));
     ZERO(job_recovery_commands);
 
