@@ -808,10 +808,6 @@ void kill_screen(const char* lcd_msg) {
 
   #endif // SDSUPPORT
 
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of f073b935b... Creality CR10 - Power outage resume first version
   #if ENABLED(MENU_ITEM_CASE_LIGHT)
 
     extern uint8_t case_light_brightness;

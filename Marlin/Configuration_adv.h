@@ -66,6 +66,14 @@
 #if ENABLED(THERMAL_PROTECTION_HOTENDS)
   #define THERMAL_PROTECTION_PERIOD 40        // Seconds
   #define THERMAL_PROTECTION_HYSTERESIS 4     // Degrees Celsius
+  
+// I3 Mega Protection settings :
+
+//#if ENABLED(THERMAL_PROTECTION_HOTENDS)
+//  #define THERMAL_PROTECTION_PERIOD 250        // Seconds-
+//  #define THERMAL_PROTECTION_HYSTERESIS 45     // Degrees Celsius
+
+// I3 MEGA END
 
   /**
    * Whenever an M104, M109, or M303 increases the target temperature, the
@@ -686,7 +694,7 @@
  * K=0 means advance disabled.
  * See Marlin documentation for calibration instructions.
  */
-//#define LIN_ADVANCE
+#define LIN_ADVANCE
 
 #if ENABLED(LIN_ADVANCE)
   #define LIN_ADVANCE_K 0
