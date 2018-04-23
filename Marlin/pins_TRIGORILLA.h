@@ -91,11 +91,6 @@
   #define SD_DETECT_PIN    49
 #endif
 
-#if defined(POWER_LOSS_RECOVERY)
-   #define OUTAGETEST_PIN       79
-   #define OUTAGECON_PIN        58
-#endif
-  
 // LCD
 #if defined(REPRAP_DISCOUNT_SMART_CONTROLLER) || defined(G3D_PANEL) || defined(ANYCUBIC_TFT_MODEL)
 	#define KILL_PIN        41
@@ -209,4 +204,4 @@
 		#define LCD_PINS_D7 29
 		
 	#endif
-#endif
+#endif	

@@ -352,11 +352,6 @@
 #include "AnycubicTFT.h"
 #endif
 
-#if ENABLED(POWER_LOSS_RECOVERY)
-  int PowerInt= 6;
-#endif
-
-
 bool Running = true;
 
 uint8_t marlin_debug_flags = DEBUG_NONE;
@@ -774,14 +769,6 @@ void report_current_position_detail();
     print_xyz(PSTR("  " STRINGIFY(VAR) "="), PSTR(" : " SUFFIX "\n"), VAR); }while(0)
 #endif
 
-#if ENABLED(POWER_LOSS_RECOVERY) 
-  void setup_OutageTestPin(){
-  pinMode(OUTAGETEST_PIN,INPUT);
-  pinMode(OUTAGECON_PIN,OUTPUT);
-  WRITE(OUTAGECON_PIN,LOW);
-  }
-#endif
-  
 /**
  * sync_plan_position
  *
@@ -1223,33 +1210,6 @@ inline void get_serial_commands() {
     }
   }
 
-  #if ENABLED(POWER_LOSS_RECOVERY)
-
-    #if HAS_LEVELING
-      #define APPEND_CMD_COUNT 7
-    #else
-      #define APPEND_CMD_COUNT 5
-    #endif
-
-    job_recovery_info_t job_recovery_info;
-    static char job_recovery_commands[BUFSIZE + APPEND_CMD_COUNT][MAX_CMD_SIZE];
-    uint8_t job_recovery_commands_count; // = 0
-    JobRecoveryPhase job_recovery_phase = JOB_RECOVERY_IDLE;
-
-    inline bool drain_job_recovery_commands() {
-      static uint8_t job_recovery_commands_index = 0; // Resets on reboot
-      if (job_recovery_commands_count) {
-        if (_enqueuecommand(job_recovery_commands[job_recovery_commands_index])) {
-          ++job_recovery_commands_index;
-          if (!--job_recovery_commands_count) job_recovery_phase = JOB_RECOVERY_IDLE;
-        }
-        return true;
-      }
-      return false;
-    }
-
-  #endif
-
 #endif // SDSUPPORT
 
 /**
@@ -1264,11 +1224,6 @@ void get_available_commands() {
   if (drain_injected_commands_P()) return;
 
   get_serial_commands();
-
-  #if ENABLED(POWER_LOSS_RECOVERY)
-    // Commands for power-loss recovery take precedence
-    if (job_recovery_phase == JOB_RECOVERY_YES && drain_job_recovery_commands()) return;
-  #endif
 
   #if ENABLED(SDSUPPORT)
     get_sdcard_commands();
@@ -3293,6 +3248,7 @@ static void homeaxis(const AxisEnum axis) {
 
 #endif
 
+<<<<<<< HEAD
 
 #if ENABLED(POWER_LOSS_RECOVERY)
 
@@ -3526,6 +3482,8 @@ static void homeaxis(const AxisEnum axis) {
 
 
 
+=======
+>>>>>>> parent of f073b935b... Creality CR10 - Power outage resume first version
 /**
  * ***************************************************************************
  * ***************************** G-CODE HANDLING *****************************
@@ -3815,6 +3773,7 @@ inline void gcode_G4() {
 
 #endif // BEZIER_CURVE_SUPPORT
 
+<<<<<<< HEAD
 #if ENABLED(POWER_LOSS_RECOVERY)
 
      void PowerKill()
@@ -3879,6 +3838,8 @@ inline void gcode_G4() {
 
 #endif // POWER_LOSS_RECOVERY  
 
+=======
+>>>>>>> parent of f073b935b... Creality CR10 - Power outage resume first version
 #if ENABLED(FWRETRACT)
 
   /**
@@ -7122,11 +7083,6 @@ inline void gcode_M17() {
    * M24: Start or Resume SD Print
    */
   inline void gcode_M24() {
-
-    #if ENABLED(POWER_LOSS_RECOVERY)
-      card.removeJobRecoveryFile();
-    #endif
-
     #if ENABLED(PARK_HEAD_ON_PAUSE)
       resume_print();
     #endif
@@ -12014,18 +11970,6 @@ void process_parsed_command() {
           break;
       #endif // BEZIER_CURVE_SUPPORT
 
-      #if ENABLED(POWER_LOSS_RECOVERY)
-        case 6: // G6: Enable Power Loss
-          gcode_G6();
-          break;
-        case 7: // G7: Power Loss Recovery Info
-          gcode_G7();
-          break;
-        case 8: // G8: Power Loss Recovery Start
-          gcode_G8();
-          break;                    
-      #endif // BEZIER_CURVE_SUPPORT
-      
       #if ENABLED(FWRETRACT)
         case 10: // G10: retract
           gcode_G10();
@@ -14752,7 +14696,6 @@ void setup() {
   #ifdef ANYCUBIC_TFT_MODEL
     // Setup AnycubicTFT
     AnycubicTFT.Setup();
-    setup_OutageTestPin();
   #endif
 
   #if ENABLED(HAVE_TMC2208)
@@ -14804,10 +14747,6 @@ void setup() {
   SYNC_PLAN_POSITION_KINEMATIC();
 
   thermalManager.init();    // Initialize temperature loop
-
-  //#if ENABLED(POWER_LOSS_RECOVERY)
-  //  do_print_job_recovery();
-  //#endif
 
   #if ENABLED(USE_WATCHDOG)
     watchdog_init();
@@ -15014,9 +14953,7 @@ void loop() {
       }
       else
         process_next_command();
-        #if ENABLED(POWER_LOSS_RECOVERY)
-        //  if (card.cardOK && card.sdprinting) save_job_recovery_info();
-        #endif
+
     #else
 
       process_next_command();

@@ -1807,7 +1807,12 @@
 // Enable Anycubic TFT
 #define ANYCUBIC_TFT_MODEL
 #define ANYCUBIC_FILAMENT_RUNOUT_SENSOR
+<<<<<<< HEAD
 //#define ANYCUBIC_TFT_DEBUG
 #define POWER_LOSS_RECOVERY
 #define DEBUG_POWER_LOSS_RECOVERY
+=======
+#define ANYCUBIC_TFT_DEBUG
+
+>>>>>>> parent of f073b935b... Creality CR10 - Power outage resume first version
 #endif // CONFIGURATION_H

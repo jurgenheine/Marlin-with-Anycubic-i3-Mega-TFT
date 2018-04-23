@@ -209,9 +209,12 @@ void AnycubicTFTClass::HandleSpecialMenu()
   } else if (strcmp(SelectedDirectory, "<preheat 200 60>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: PreHeat 200 60");
     enqueue_and_echo_commands_P(PSTR("M140 S60\nM104 S200 T0"));
+<<<<<<< HEAD
   } else if (strcmp(SelectedDirectory, "<outage recover>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: Outage Recover");
     enqueue_and_echo_commands_P(PSTR("G8"));
+=======
+>>>>>>> parent of f073b935b... Creality CR10 - Power outage resume first version
   } else if (strcmp(SelectedDirectory, "<exit>")==0) {
     SpecialMenu=false;
   }
@@ -237,11 +240,17 @@ void AnycubicTFTClass::Ls()
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Read EEPROM>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Save EEPROM>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Save EEPROM>");
+<<<<<<< HEAD
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune PID>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune PID>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Outage Recover>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Outage Recover>");
        break;
+=======
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune Hotend PID>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune Hotend PID>");
+        break;
+>>>>>>> parent of f073b935b... Creality CR10 - Power outage resume first version
         
       default:
         break;
