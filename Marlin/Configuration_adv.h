@@ -66,7 +66,7 @@
 #if ENABLED(THERMAL_PROTECTION_HOTENDS)
   #define THERMAL_PROTECTION_PERIOD 40        // Seconds
   #define THERMAL_PROTECTION_HYSTERESIS 4     // Degrees Celsius
-  
+
 // I3 Mega Protection settings :
 
 //#if ENABLED(THERMAL_PROTECTION_HOTENDS)
@@ -92,7 +92,7 @@
 #endif
 
 // I3 Mega Protection settings :
-  
+
 //  #define WATCH_TEMP_PERIOD 35                // Seconds
 //  #define WATCH_TEMP_INCREASE 10               // Degrees Celsius
 //#endif
@@ -203,7 +203,7 @@
  */
 #define USE_CONTROLLER_FAN
 #if ENABLED(USE_CONTROLLER_FAN)
-  //#define CONTROLLER_FAN_PIN FAN1_PIN  // Set a custom pin for the controller fan
+  #define CONTROLLER_FAN_PIN FAN1_PIN  // Set a custom pin for the controller fan
   #define CONTROLLERFAN_SECS 60          // Duration in seconds for the fan to run after all motors are disabled
   #define CONTROLLERFAN_SPEED 255        // 255 == full speed
 #endif
