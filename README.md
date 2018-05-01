@@ -90,7 +90,7 @@ You need to perform few optional operations to make sure the settings are accura
  To adjust the extruder, it makes a mark on the filament from the extruder at 15 cm for example.
 
  Reset to zero the extrusion counter with a G92 E0
- Then the hotend is heated and the following command is used to push the filament by 10 cm: G1 E10 F 92
+ Then the hotend is heated and the following command is used to push the filament by 10 cm: G1 E100 F 92
 
  Then we measure how much centimeters it remains between the mark and the extruder and we calculate the new value of step: Ex: 9.1 cm are taken instead of 10 so the value will be 92.6 * 100/91 = 102 (old value * 100 / number of cm taken).
 
@@ -131,7 +131,7 @@ You need to perform few optional operations to make sure the settings are accura
 
 5. Change the K value for linear advance.
 
- Value for K is set at 0. You can activate Linear advance but yu can have some issue with small segments/details. 
+ Value for K is set at 0. You can activate Linear advance but yu can have some issue with small segments/details.
  You can use the gcode generator on marlin website if you want to adjust the value to your printer/filament. (http://marlinfw.org/docs/features/lin_advance.html)
  Command to change it is M900 Kxx (where xx is what you found with the test)
 
@@ -155,7 +155,7 @@ Flashing Mega i3 with Octoprint
  sudo apt-get update
 
  sudo apt-get install avrdude
- 
+
 3. Setup FirmwareUpdater
 
  in Octoprint Settings / Firmware Updater / parameters
@@ -167,7 +167,7 @@ Flashing Mega i3 with Octoprint
  Path to avrdude : /usr/bin/avrdude
 
  AVR Programmer Type : wiring
- 
+
 4. Save : you are ready to flash
 
 
