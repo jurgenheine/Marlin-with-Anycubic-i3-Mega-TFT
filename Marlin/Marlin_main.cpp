@@ -1090,13 +1090,14 @@ inline void get_serial_commands() {
         }
       }
 
-      #if DISABLED(EMERGENCY_PARSER)
+      #if ENABLED(EMERGENCY_PARSER)
         // If command was e-stop process now
         if (strcmp(command, "M108") == 0) {
           wait_for_heatup = false;
-          #if ENABLED(ULTIPANEL)
+          //#if ENABLED(ULTIPANEL)
+            SERIAL_ECHOLNPGM("M108 Restart");
             wait_for_user = false;
-          #endif
+          //#endif
         }
         if (strcmp(command, "M112") == 0) kill(PSTR(MSG_KILLED));
         if (strcmp(command, "M410") == 0) { quickstop_stepper(); }
@@ -6597,7 +6598,8 @@ inline void gcode_M17() {
         #endif
 
         // Wait for LCD click or M108
-        while (wait_for_user) idle(true);
+        // TO CHECK
+        //while (wait_for_user) idle(true);
 
         // Re-enable the heaters if they timed out
         HOTEND_LOOP() thermalManager.reset_heater_idle_timer(e);
@@ -6615,7 +6617,8 @@ inline void gcode_M17() {
         HOTEND_LOOP()
           thermalManager.start_heater_idle_timer(e, nozzle_timeout);
 
-        wait_for_user = true; /* Wait for user to load filament */
+        // TO Check
+        // wait_for_user = true; // Wait for user to load filament
         nozzle_timed_out = false;
 
         #if HAS_BUZZER
@@ -7839,7 +7842,7 @@ inline void gcode_M109() {
     #ifdef ANYCUBIC_TFT_MODEL
       AnycubicTFT.CommandScan();
     #endif
-    
+
     #if TEMP_RESIDENCY_TIME > 0
 
       const float temp_diff = FABS(target_temp - temp);
@@ -7878,7 +7881,7 @@ inline void gcode_M109() {
   #ifdef ANYCUBIC_TFT_MODEL
   AnycubicTFT.HeatingDone();
   #endif
-  
+
   #if DISABLED(BUSY_WHILE_HEATING)
     KEEPALIVE_STATE(IN_HANDLER);
   #endif
@@ -7984,11 +7987,11 @@ inline void gcode_M109() {
           }
         }
       #endif
-      
+
       #ifdef ANYCUBIC_TFT_MODEL
       AnycubicTFT.CommandScan();
       #endif
-      
+
       #if TEMP_BED_RESIDENCY_TIME > 0
 
         const float temp_diff = FABS(target_temp - temp);
@@ -8020,7 +8023,7 @@ inline void gcode_M109() {
     #ifdef ANYCUBIC_TFT_MODEL
     AnycubicTFT.BedHeatingDone();
     #endif
-    
+
     if (wait_for_heatup) LCD_MESSAGEPGM(MSG_BED_DONE);
     #if DISABLED(BUSY_WHILE_HEATING)
       KEEPALIVE_STATE(IN_HANDLER);
@@ -8213,7 +8216,7 @@ inline void gcode_M140() {
     #if ENABLED(ULTIPANEL)
       LCD_MESSAGEPGM(WELCOME_MSG);
     #endif
-    
+
     #ifdef ANYCUBIC_TFT_MODEL
     AnycubicTFT.CommandScan();
     #endif
@@ -8256,7 +8259,7 @@ inline void gcode_M81() {
   #if ENABLED(ULTIPANEL)
     LCD_MESSAGEPGM(MACHINE_NAME " " MSG_OFF ".");
   #endif
-  
+
   #ifdef ANYCUBIC_TFT_MODEL
   AnycubicTFT.CommandScan();
   #endif
@@ -14054,7 +14057,7 @@ void manage_inactivity(bool ignore_stepper_queue/*=false*/) {
     if ((IS_SD_PRINTING || print_job_timer.isRunning()) && (READ(FIL_RUNOUT_PIN) == FIL_RUNOUT_INVERTING))
       handle_filament_runout();
   #endif
-  
+
   #if ENABLED(ANYCUBIC_TFT_MODEL) && ENABLED(ANYCUBIC_FILAMENT_RUNOUT_SENSOR)
   AnycubicTFT.FilamentRunout();
   #endif
@@ -14236,7 +14239,7 @@ void idle(
 #ifdef ANYCUBIC_TFT_MODEL
   AnycubicTFT.CommandScan();
 #endif
-  
+
   lcd_update();
 
   host_keepalive();
@@ -14288,7 +14291,7 @@ void kill(const char* lcd_msg) {
   #else
     UNUSED(lcd_msg);
   #endif
-  
+
   #ifdef ANYCUBIC_TFT_MODEL
     // Kill AnycubicTFT
     AnycubicTFT.KillTFT();
@@ -14382,7 +14385,7 @@ void setup() {
   MYSERIAL.begin(BAUDRATE);
   SERIAL_PROTOCOLLNPGM("start");
   SERIAL_ECHO_START();
-  
+
   #ifdef ANYCUBIC_TFT_MODEL
     // Setup AnycubicTFT
     AnycubicTFT.Setup();
