@@ -6676,20 +6676,22 @@ inline void gcode_M17() {
       do_pause_e_move(load_length, FILAMENT_CHANGE_LOAD_FEEDRATE);
     }
 
-    #if ENABLED(ULTIPANEL) && ADVANCED_PAUSE_EXTRUDE_LENGTH > 0
+    //#if ENABLED(ULTIPANEL) && ADVANCED_PAUSE_EXTRUDE_LENGTH > 0
+    #if ADVANCED_PAUSE_EXTRUDE_LENGTH > 0
 
       if (!thermalManager.tooColdToExtrude(active_extruder)) {
         float extrude_length = initial_extrude_length;
 
-        do {
+        //do {
           if (extrude_length > 0) {
             // "Wait for filament extrude"
-            lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_EXTRUDE);
+            //lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_EXTRUDE);
 
             // Extrude filament to get into hotend
             do_pause_e_move(extrude_length, ADVANCED_PAUSE_EXTRUDE_FEEDRATE);
           }
 
+          /*
           // Show "Extrude More" / "Resume" menu and wait for reply
           KEEPALIVE_STATE(PAUSED_FOR_USER);
           wait_for_user = false;
@@ -6698,9 +6700,9 @@ inline void gcode_M17() {
           KEEPALIVE_STATE(IN_HANDLER);
 
           extrude_length = ADVANCED_PAUSE_EXTRUDE_LENGTH;
-
+          */
           // Keep looping if "Extrude More" was selected
-        } while (advanced_pause_menu_response == ADVANCED_PAUSE_RESPONSE_EXTRUDE_MORE);
+        //} while (advanced_pause_menu_response == ADVANCED_PAUSE_RESPONSE_EXTRUDE_MORE);
       }
 
     #endif

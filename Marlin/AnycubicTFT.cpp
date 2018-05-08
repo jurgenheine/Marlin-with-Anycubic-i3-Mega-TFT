@@ -217,15 +217,15 @@ void AnycubicTFTClass::HandleSpecialMenu()
   } else if (strcmp(SelectedDirectory, "<save eeprom>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: Save EEPROM");
     enqueue_and_echo_commands_P(PSTR("M500"));
-  } else if (strcmp(SelectedDirectory, "<read eeprom>")==0) {
-    SERIAL_PROTOCOLLNPGM("Special Menu: Read EEPROM");
-    enqueue_and_echo_commands_P(PSTR("M501"));
   } else if (strcmp(SelectedDirectory, "<hotend maintenance>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: HotEnd Maintenance");
     enqueue_and_echo_commands_P(PSTR("G28\nG0 X100 Y100 Z125 F5000"));
   } else if (strcmp(SelectedDirectory, "<preheat 200 60>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: PreHeat 200 60");
     enqueue_and_echo_commands_P(PSTR("M140 S60\nM104 S200 T0"));
+  } else if (strcmp(SelectedDirectory, "<advanced pause m600>")==0) {
+    SERIAL_PROTOCOLLNPGM("Special Menu: Advanced Pause M600");
+    enqueue_and_echo_commands_P(PSTR("M600"));
   } else if (strcmp(SelectedDirectory, "<restart after m600>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: Restart after M600");
     ResumePrint();
@@ -243,21 +243,21 @@ void AnycubicTFTClass::Ls()
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Exit>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<PreHeat 200 60>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<PreHeat 200 60>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Bed Leveling>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Bed Leveling>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<HotEnd Maintenance>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<HotEnd Maintenance>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Advanced Pause M600>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Advanced Pause M600>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Restart after M600>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Restart after M600>");
         break;
 
       case 4: // Second Page
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Read EEPROM>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Read EEPROM>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Bed Leveling>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Bed Leveling>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Save EEPROM>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Save EEPROM>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune Hotend PID>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Auto Tune Hotend PID>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Restart after M600>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Restart after M600>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<HotEnd Maintenance>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<HotEnd Maintenance>");
         break;
 
       default:
