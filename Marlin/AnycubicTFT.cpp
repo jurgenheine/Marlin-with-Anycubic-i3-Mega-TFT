@@ -223,8 +223,8 @@ void AnycubicTFTClass::HandleSpecialMenu()
   } else if (strcmp(SelectedDirectory, "<preheat 200 60>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: PreHeat 200 60");
     enqueue_and_echo_commands_P(PSTR("M140 S60\nM104 S200 T0"));
-  } else if (strcmp(SelectedDirectory, "<advanced pause m600>")==0) {
-    SERIAL_PROTOCOLLNPGM("Special Menu: Advanced Pause M600");
+  } else if (strcmp(SelectedDirectory, "<pause m600>")==0) {
+    SERIAL_PROTOCOLLNPGM("Special Menu: Pause M600");
     enqueue_and_echo_commands_P(PSTR("M600"));
   } else if (strcmp(SelectedDirectory, "<restart after m600>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: Restart after M600");
@@ -243,8 +243,8 @@ void AnycubicTFTClass::Ls()
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Exit>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<PreHeat 200 60>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<PreHeat 200 60>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Advanced Pause M600>");
-        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Advanced Pause M600>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Pause M600>");
+        ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Pause M600>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Restart after M600>");
         ANYCUBIC_SERIAL_PROTOCOLLNPGM("<Restart after M600>");
         break;
