@@ -224,8 +224,8 @@ void AnycubicTFTClass::HandleSpecialMenu()
     SERIAL_PROTOCOLLNPGM("Special Menu: PreHeat 200 60");
     enqueue_and_echo_commands_P(PSTR("M140 S60\nM104 S200 T0"));
   } else if (strcmp(SelectedDirectory, "<pause m600>")==0) {
-    SERIAL_PROTOCOLLNPGM("Special Menu: Pause M600");
-    enqueue_and_echo_commands_P(PSTR("M600"));
+    SERIAL_PROTOCOLLNPGM("Special Menu: pause m600");
+    PausePrint();
   } else if (strcmp(SelectedDirectory, "<restart after m600>")==0) {
     SERIAL_PROTOCOLLNPGM("Special Menu: Restart after M600");
     ResumePrint();
@@ -662,7 +662,8 @@ void AnycubicTFTClass::GetCommandFromTFT()
             kill(PSTR(MSG_KILLED));
             break;
           case 13: // A13 SELECTION FILE
-            if((!planner.movesplanned()) && (TFTstate!=ANYCUBIC_TFT_STATE_SDPAUSE) && (TFTstate!=ANYCUBIC_TFT_STATE_SDOUTAGE))
+            //if((!planner.movesplanned()) && (TFTstate!=ANYCUBIC_TFT_STATE_SDPAUSE) && (TFTstate!=ANYCUBIC_TFT_STATE_SDOUTAGE))
+            if((TFTstate!=ANYCUBIC_TFT_STATE_SDOUTAGE))
             {
               starpos = (strchr(TFTstrchr_pointer + 4,'*'));
               if (TFTstrchr_pointer[4] == '/') {
