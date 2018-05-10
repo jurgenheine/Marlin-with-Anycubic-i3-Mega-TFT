@@ -768,7 +768,12 @@ void AnycubicTFTClass::GetCommandFromTFT()
           case 20:// A20 read printing speed
           {
             if(CodeSeen('S')){
-              feedrate_percentage=constrain(CodeValue(),40,999);}
+              feedrate_percentage=constrain(CodeValue(),40,999);
+              if((!planner.movesplanned()) && ENABLED(ADVANCED_PAUSE_FEATURE)){
+                SERIAL_ECHOLNPGM("TFT Serial Debug: Restart after M600");
+                ResumePrint();
+              }
+            }
             else{
               ANYCUBIC_SERIAL_PROTOCOLPGM("A20V ");
               ANYCUBIC_SERIAL_PROTOCOL(feedrate_percentage);
@@ -839,7 +844,7 @@ void AnycubicTFTClass::GetCommandFromTFT()
             if((!planner.movesplanned())&& (TFTstate!=ANYCUBIC_TFT_STATE_SDPAUSE) && (TFTstate!=ANYCUBIC_TFT_STATE_SDOUTAGE))
             {
               if((current_position[Z_AXIS]<10)) enqueue_and_echo_commands_P(PSTR("G1 Z10")); // RAISE Z AXIS
-              thermalManager.setTargetBed(50);
+              thermalManager.setTargetBed(60);
               thermalManager.setTargetHotend(200, 0);
               ANYCUBIC_SERIAL_SUCC_START;
               ANYCUBIC_SERIAL_ENTER();
