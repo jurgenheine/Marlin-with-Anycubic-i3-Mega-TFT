@@ -24,6 +24,8 @@ Difference compared to anycubic official firmware:
 * Hotend limitation at 250°. (can be too small for petg and ABS but good limit for V5 hotend)
 * Hotend fan can run at 12V (maybe put 85-90% instead of 100% for the fan otherwise it cool to much)
 * Special menu from Derhopp active. New entry in the menu to put hotend in maintenance position
+* M600 advanced pause can be managed from menu
+* Filament lack will trigger M600 (use "Speed" entry in the TFT menu and then "OK" to resume)
 * More tests to do to see if everything is ok
 
 ************
@@ -63,7 +65,7 @@ This can be repeated as many time as you want.
 Print started from usb on demand M600 from usb serial command (need more test to make sure M108 is taken in account every time):
 
 When the print is on, you can send M600 and then the gcode buffer will finish few moves, the hotend will park, filament will unload, printer will bip.
-You can then put new filament and send M108 command to resume. (Alternatively, you can press "M600 resume" entry in the special menu)
+You can then put new filament and you can press "M600 resume" entry in the special menu or press "Speed" entry in the TFT menu and then "OK".
 Filament is then loaded (hotend heating will restart first if required as it stop after a defined idle time) and when ok, the head will continue the print. You can remove filament oozing on the file before hotend start printing again.
 This can be repeated as many time as you want.
 
@@ -77,8 +79,12 @@ This can be repeated as many time as you want.
 
 Print started from SD M600 in the gcode:
 
-This is not possible for the time being.
+When the print is on, when M600 is seen, the hotend will park, filament will unload, printer will bip.
+You can then put new filament and press "Speed" entry in the TFT menu and then "OK".
+Filament is then loaded (hotend heating will restart first if required as it stop after a defined idle time) and when ok, the head will continue the print. You can remove filament oozing on the file before hotend start printing again.
+This can be repeated as many time as you want.
 
+Note that Filament sensor will trigger M600 and to resume, you should use "Speed" entry in the TFT menu and then "OK".
 
 ************
 

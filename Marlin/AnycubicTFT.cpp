@@ -300,19 +300,19 @@ void AnycubicTFTClass::Ls()
           ANYCUBIC_SERIAL_PROTOCOLPGM("/");
           ANYCUBIC_SERIAL_PROTOCOLLN(card.filename);
           ANYCUBIC_SERIAL_PROTOCOLPGM("/");
-          ANYCUBIC_SERIAL_PROTOCOLLN(card.filename);
-          //ANYCUBIC_SERIAL_PROTOCOLLN(card.longFilename);
+          ANYCUBIC_SERIAL_PROTOCOLLN(card.longFilename);
+
           SERIAL_PROTOCOL(cnt);
           SERIAL_PROTOCOLPGM("/");
-          //SERIAL_PROTOCOLLN(card.longFilename);
-          SERIAL_PROTOCOLLN(card.filename);
+          SERIAL_PROTOCOLLN(card.longFilename);
+
         } else {
           ANYCUBIC_SERIAL_PROTOCOLLN(card.filename);
-          //ANYCUBIC_SERIAL_PROTOCOLLN(card.longFilename);
-          ANYCUBIC_SERIAL_PROTOCOLLN(card.filename);
+          ANYCUBIC_SERIAL_PROTOCOLLN(card.longFilename);
+
           SERIAL_PROTOCOL(cnt);
-          //SERIAL_PROTOCOLLN(card.longFilename);
-          SERIAL_PROTOCOLLN(card.filename);
+          SERIAL_PROTOCOLLN(card.longFilename);
+
         }
       }
     }
