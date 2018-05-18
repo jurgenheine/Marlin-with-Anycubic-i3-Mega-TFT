@@ -24,6 +24,8 @@ Difference compared to anycubic official firmware:
 * Hotend limitation at 250°. (can be too small for petg and ABS but good limit for V5 hotend)
 * Hotend fan can run at 12V (maybe put 85-90% instead of 100% for the fan otherwise it cool to much)
 * Special menu from Derhopp active. New entry in the menu to put hotend in maintenance position
+* M600 advanced pause can be managed from menu
+* Filament lack will trigger M600 (use "Speed" entry in the TFT menu and then "OK" to resume)
 * More tests to do to see if everything is ok
 
 ************
@@ -37,6 +39,52 @@ It adds to the top of the list of files an entry that looks like a directory and
 
 If you want to add / modify these entries, you have to edit the firmware and send it back to the trigorilla. Everything happens in the AnycubicTFT.cpp file:
 in the AnycubicTFTClass :: Ls () section we add the menu entries (4 per page) of the <Auto Tune Hotend PID> style and then in the AnycubicTFTClass :: HandleSpecialMenu () section we define which command (s) will be started : M303 C8 S200.
+
+************
+M600 implementation (1.1.8)
+
+Current parameters : Load/unload is configured to 500 (approximate length of the Bowden tube). Filament prime is configure to 50. This will create a bunch of filament on the back left corner before restarting print.
+
+Print started from SD with on demand TFT M600:
+
+When the print is on, you can press the "pause" button on the screen and then the gcode buffer will finish few moves, the hotend will park, filament will unload, printer will bip.
+You can then put new filament and press "continue" button.
+Filament is then loaded (hotend heating will restart first if required as it stop after a defined idle time) and when ok, the head will continue the print. You can remove filament oozing on the file before hotend start printing again.
+This can be repeated as many time as you want.
+"Pause failed" message can appears on screen but this is cosmetic only and cannot be changed.
+
+
+Print started from usb on demand M600 from TFT screen:
+
+When the print is on, you can press the "M600 pause" entry in the special menu and then the gcode buffer will finish few moves, the hotend will park, filament will unload, printer will bip.
+You can then put new filament and press "M600 resume" entry in the special menu.
+Filament is then loaded (hotend heating will restart first if required as it stop after a defined idle time) and when ok, the head will continue the print. You can remove filament oozing on the file before hotend start printing again.
+This can be repeated as many time as you want.
+
+
+Print started from usb on demand M600 from usb serial command (need more test to make sure M108 is taken in account every time):
+
+When the print is on, you can send M600 and then the gcode buffer will finish few moves, the hotend will park, filament will unload, printer will bip.
+You can then put new filament and you can press "M600 resume" entry in the special menu or press "Speed" entry in the TFT menu and then "OK".
+Filament is then loaded (hotend heating will restart first if required as it stop after a defined idle time) and when ok, the head will continue the print. You can remove filament oozing on the file before hotend start printing again.
+This can be repeated as many time as you want.
+
+Print started from usb M600 in the gcode:
+
+When the print is on, when M600 is seen, the hotend will park, filament will unload, printer will bip.
+You can then put new filament and press "M600 resume" entry in the special menu.
+Filament is then loaded (hotend heating will restart first if required as it stop after a defined idle time) and when ok, the head will continue the print. You can remove filament oozing on the file before hotend start printing again.
+This can be repeated as many time as you want.
+
+
+Print started from SD M600 in the gcode:
+
+When the print is on, when M600 is seen, the hotend will park, filament will unload, printer will bip.
+You can then put new filament and press "Speed" entry in the TFT menu and then "OK".
+Filament is then loaded (hotend heating will restart first if required as it stop after a defined idle time) and when ok, the head will continue the print. You can remove filament oozing on the file before hotend start printing again.
+This can be repeated as many time as you want.
+
+Note that Filament sensor will trigger M600 and to resume, you should use "Speed" entry in the TFT menu and then "OK".
 
 ************
 
