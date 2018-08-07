@@ -159,6 +159,12 @@
 #define BOARD_5DPRINT           88    // 5DPrint D8 Driver Board
 
 //
+// Anycubic i3 Mega mainboard
+//
+
+#define BOARD_TRIGORILLA        998  // Tigorilla
+
+//
 // LPC1768 ARM Cortex M3
 //
 
