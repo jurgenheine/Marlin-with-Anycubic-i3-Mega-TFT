@@ -31,17 +31,14 @@
 
 #include "../../inc/MarlinConfig.h"
 
-#include <WString.h>
+#if SERIAL_PORT >= 0
 
-#ifndef SERIAL_PORT
-  #define SERIAL_PORT 0
-#endif
+#include <WString.h>
 
 #define DEC 10
 #define HEX 16
 #define OCT 8
 #define BIN 2
-#define BYTE 0
 
 // Define constants and variables for buffering incoming serial data.  We're
 // using a ring buffer (I think), in which rx_buffer_head is the index of the
@@ -55,17 +52,13 @@
   #define TX_BUFFER_SIZE 32
 #endif
 
-#if ENABLED(SERIAL_XON_XOFF) && RX_BUFFER_SIZE < 1024
-  #error "XON/XOFF requires RX_BUFFER_SIZE >= 1024 for reliable transfers without drops."
-#endif
-
-#if !IS_POWER_OF_2(RX_BUFFER_SIZE) || RX_BUFFER_SIZE < 2
-  #error "RX_BUFFER_SIZE must be a power of 2 greater than 1."
-#endif
-
-#if TX_BUFFER_SIZE && (TX_BUFFER_SIZE < 2 || TX_BUFFER_SIZE > 256 || !IS_POWER_OF_2(TX_BUFFER_SIZE))
-  #error "TX_BUFFER_SIZE must be 0, a power of 2 greater than 1, and no greater than 256."
-#endif
+//#if ENABLED(SERIAL_XON_XOFF) && RX_BUFFER_SIZE < 1024
+//  #error "SERIAL_XON_XOFF requires RX_BUFFER_SIZE >= 1024 for reliable transfers without drops."
+//#elif RX_BUFFER_SIZE && (RX_BUFFER_SIZE < 2 || !IS_POWER_OF_2(RX_BUFFER_SIZE))
+//  #error "RX_BUFFER_SIZE must be a power of 2 greater than 1."
+//#elif TX_BUFFER_SIZE && (TX_BUFFER_SIZE < 2 || TX_BUFFER_SIZE > 256 || !IS_POWER_OF_2(TX_BUFFER_SIZE))
+//  #error "TX_BUFFER_SIZE must be 0, a power of 2 greater than 1, and no greater than 256."
+//#endif
 
 #if RX_BUFFER_SIZE > 256
   typedef uint16_t ring_buffer_pos_t;
@@ -75,6 +68,14 @@
 
 #if ENABLED(SERIAL_STATS_DROPPED_RX)
   extern uint8_t rx_dropped_bytes;
+#endif
+
+#if ENABLED(SERIAL_STATS_RX_BUFFER_OVERRUNS)
+  extern uint8_t rx_buffer_overruns;
+#endif
+
+#if ENABLED(SERIAL_STATS_RX_FRAMING_ERRORS)
+  extern uint8_t rx_framing_errors;
 #endif
 
 #if ENABLED(SERIAL_STATS_MAX_RX_QUEUED)
@@ -91,16 +92,19 @@ public:
   static int read(void);
   static void flush(void);
   static ring_buffer_pos_t available(void);
-  static void checkRx(void);
   static void write(const uint8_t c);
-  #if TX_BUFFER_SIZE > 0
-    static uint8_t availableForWrite(void);
-    static void flushTX(void);
-  #endif
-  static void writeNoHandshake(const uint8_t c);
+  static void flushTX(void);
 
   #if ENABLED(SERIAL_STATS_DROPPED_RX)
     FORCE_INLINE static uint32_t dropped() { return rx_dropped_bytes; }
+  #endif
+
+  #if ENABLED(SERIAL_STATS_RX_BUFFER_OVERRUNS)
+    FORCE_INLINE static uint32_t buffer_overruns() { return rx_buffer_overruns; }
+  #endif
+
+  #if ENABLED(SERIAL_STATS_RX_FRAMING_ERRORS)
+    FORCE_INLINE static uint32_t framing_errors() { return rx_framing_errors; }
   #endif
 
   #if ENABLED(SERIAL_STATS_MAX_RX_QUEUED)
@@ -112,8 +116,8 @@ public:
   FORCE_INLINE static void print(const String& s) { for (int i = 0; i < (int)s.length(); i++) write(s[i]); }
   FORCE_INLINE static void print(const char* str) { write(str); }
 
-  static void print(char, int = BYTE);
-  static void print(unsigned char, int = BYTE);
+  static void print(char, int = 0);
+  static void print(unsigned char, int = 0);
   static void print(int, int = DEC);
   static void print(unsigned int, int = DEC);
   static void print(long, int = DEC);
@@ -122,8 +126,8 @@ public:
 
   static void println(const String& s);
   static void println(const char[]);
-  static void println(char, int = BYTE);
-  static void println(unsigned char, int = BYTE);
+  static void println(char, int = 0);
+  static void println(unsigned char, int = 0);
   static void println(int, int = DEC);
   static void println(unsigned int, int = DEC);
   static void println(long, int = DEC);
@@ -138,5 +142,7 @@ private:
 };
 
 extern MarlinSerial customizedSerial;
+
+#endif // SERIAL_PORT >= 0
 
 #endif // MARLINSERIAL_DUE_H

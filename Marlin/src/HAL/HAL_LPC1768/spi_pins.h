@@ -23,27 +23,14 @@
 #ifndef SPI_PINS_LPC1768_H
 #define SPI_PINS_LPC1768_H
 
-#include "../../inc/MarlinConfig.h"
+#include "src/core/macros.h"
 
-#if MB(MKS_SBASE)
-
-#define LPC_SOFTWARE_SPI  // MKS_SBASE needs a software SPI because the
-                          // selected pins are not on a hardware SPI controller
-
-// A custom cable is needed. See the README file in the
-// Marlin\src\config\examples\Mks\Sbase directory
-
-#define SCK_PIN           P1_22  // J8-2 (moved from EXP2 P0.7)
-#define MISO_PIN          P1_23  // J8-3 (moved from EXP2 P0.8)
-#define MOSI_PIN          P2_12  // J8-4 (moved from EXP2 P0.5)
-#define SS_PIN            P0_28
-
-#else
-
-#define LPC_SOFTWARE_SPI  // Re-ARM board needs a software SPI because using the
-                          // standard LCD adapter results in the LCD and the
-                          // SD card sharing a single SPI when the RepRap Full
-                          // Graphic Smart Controller is selected
+#if ENABLED(SDSUPPORT) && ENABLED(DOGLCD) && (LCD_PINS_D4 == SCK_PIN || LCD_PINS_ENABLE == MOSI_PIN || DOGLCD_SCK == SCK_PIN || DOGLCD_MOSI == MOSI_PIN)
+  #define LPC_SOFTWARE_SPI  // If the SD card and LCD adapter share the same SPI pins, then software SPI is currently
+                            // needed due to the speed and mode requred for communicating with each device being different.
+                            // This requirement can be removed if the SPI access to these devices is updated to use
+                            // spiBeginTransaction.
+#endif
 
 /** onboard SD card */
 //#define SCK_PIN           P0_07
@@ -67,5 +54,4 @@
   #define SDSS              SS_PIN
 #endif
 
-#endif // MKS_SBASE
-#endif /* SPI_PINS_LPC1768_H */
+#endif // SPI_PINS_LPC1768_H
