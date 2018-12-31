@@ -1121,13 +1121,14 @@ inline void get_serial_commands() {
         }
       }
 
-      #if DISABLED(EMERGENCY_PARSER)
-        // Process critical commands early
+      #if ENABLED(EMERGENCY_PARSER)
+        // If command was e-stop process now
         if (strcmp(command, "M108") == 0) {
           wait_for_heatup = false;
-          #if ENABLED(NEWPANEL)
+          //#if ENABLED(ULTIPANEL)
+            SERIAL_ECHOLNPGM("M108 Restart");
             wait_for_user = false;
-          #endif
+          //#endif
         }
         if (strcmp(command, "M112") == 0) kill(PSTR(MSG_KILLED));
         if (strcmp(command, "M410") == 0) quickstop_stepper();
@@ -7289,7 +7290,8 @@ inline void gcode_M17() {
         #endif
 
         // Wait for LCD click or M108
-        while (wait_for_user) idle(true);
+        // TO CHECK
+        //while (wait_for_user) idle(true);
 
         // Re-enable the heaters if they timed out
         HOTEND_LOOP() thermalManager.reset_heater_idle_timer(e);
@@ -7315,7 +7317,8 @@ inline void gcode_M17() {
         HOTEND_LOOP()
           thermalManager.start_heater_idle_timer(e, nozzle_timeout);
 
-        wait_for_user = true; // Wait for user to load filament
+        // TO Check
+        // wait_for_user = true; // Wait for user to load filament
         nozzle_timed_out = false;
 
         #if HAS_BUZZER
@@ -8456,6 +8459,10 @@ inline void gcode_M109() {
         #endif
     #endif
   }
+
+#ifdef ANYCUBIC_TFT_MODEL
+  AnycubicTFT.HeatingStart();
+#endif
 
 #ifdef ANYCUBIC_TFT_MODEL
   AnycubicTFT.HeatingStart();
@@ -14764,6 +14771,10 @@ void manage_inactivity(const bool ignore_stepper_queue/*=false*/) {
     runout.run();
   #endif
   
+  #if ENABLED(ANYCUBIC_TFT_MODEL) && ENABLED(ANYCUBIC_FILAMENT_RUNOUT_SENSOR)
+  AnycubicTFT.FilamentRunout();
+  #endif
+
   #if ENABLED(ANYCUBIC_TFT_MODEL) && ENABLED(ANYCUBIC_FILAMENT_RUNOUT_SENSOR)
   AnycubicTFT.FilamentRunout();
   #endif
