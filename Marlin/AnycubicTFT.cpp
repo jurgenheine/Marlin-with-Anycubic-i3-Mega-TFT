@@ -779,6 +779,7 @@ void AnycubicTFTClass::GetCommandFromTFT()
 					kill(PSTR(MSG_KILLED));
 					break;
 				case 13: // A13 SELECTION FILE
+#ifdef SDSUPPORT 
 					if ((!planner.movesplanned()) && (TFTstate != ANYCUBIC_TFT_STATE_SDPAUSE) && (TFTstate != ANYCUBIC_TFT_STATE_SDPAUSE_M600) && (TFTstate != ANYCUBIC_TFT_STATE_SDOUTAGE))
 					{
 						starpos = (strchr(TFTstrchr_pointer + 4, '*'));

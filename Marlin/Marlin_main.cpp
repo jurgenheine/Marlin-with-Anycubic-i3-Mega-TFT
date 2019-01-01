@@ -1120,18 +1120,25 @@ inline void get_serial_commands() {
           }
         }
       }
+	  #if DISABLED(EMERGENCY_PARSER)
+			// Process critical commands early
+			if (strcmp(command, "M108") == 0) {
+				wait_for_heatup = false;
+	  #if ENABLED(NEWPANEL)
+				wait_for_user = false;
+	  #endif
+			}
+			if (strcmp(command, "M112") == 0) kill(PSTR(MSG_KILLED));
+			if (strcmp(command, "M410") == 0) quickstop_stepper();
+	  #endif
 
-      #if ENABLED(EMERGENCY_PARSER)
+      #if ENABLED(EMERGENCY_PARSER) && ANYCUBIC_TFT_MODEL
         // If command was e-stop process now
         if (strcmp(command, "M108") == 0) {
           wait_for_heatup = false;
-          //#if ENABLED(ULTIPANEL)
-            SERIAL_ECHOLNPGM("M108 Restart");
-            wait_for_user = false;
-          //#endif
+          SERIAL_ECHOLNPGM("M108 Restart");
+          wait_for_user = false;
         }
-        if (strcmp(command, "M112") == 0) kill(PSTR(MSG_KILLED));
-        if (strcmp(command, "M410") == 0) quickstop_stepper();
       #endif
 
       #if defined(NO_TIMEOUTS) && NO_TIMEOUTS > 0
@@ -7317,8 +7324,7 @@ inline void gcode_M17() {
         HOTEND_LOOP()
           thermalManager.start_heater_idle_timer(e, nozzle_timeout);
 
-        // TO Check
-        // wait_for_user = true; // Wait for user to load filament
+        wait_for_user = true; // Wait for user to load filament
         nozzle_timed_out = false;
 
         #if HAS_BUZZER
@@ -8464,13 +8470,9 @@ inline void gcode_M109() {
   AnycubicTFT.HeatingStart();
 #endif
 
-#ifdef ANYCUBIC_TFT_MODEL
-  AnycubicTFT.HeatingStart();
-#endif
-
-  #if ENABLED(AUTOTEMP)
+#if ENABLED(AUTOTEMP)
     planner.autotemp_M104_M109();
-  #endif
+#endif
 
   if (!set_temp) return;
 
@@ -14771,10 +14773,6 @@ void manage_inactivity(const bool ignore_stepper_queue/*=false*/) {
     runout.run();
   #endif
   
-  #if ENABLED(ANYCUBIC_TFT_MODEL) && ENABLED(ANYCUBIC_FILAMENT_RUNOUT_SENSOR)
-  AnycubicTFT.FilamentRunout();
-  #endif
-
   #if ENABLED(ANYCUBIC_TFT_MODEL) && ENABLED(ANYCUBIC_FILAMENT_RUNOUT_SENSOR)
   AnycubicTFT.FilamentRunout();
   #endif
